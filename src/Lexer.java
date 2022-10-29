@@ -42,10 +42,13 @@ public class Lexer {
      *  scan ahead in the string to the end of the current token.
         ref is the current pointer in the string.
      */
+
+    public boolean isOperator(char c){
+        return (c == '+' || c == '-' || c == '*' || c == '/');
+    }
     public Token getNextToken(int ref) {
         Token token = new Token();
-        if (buffer.charAt(ref) == '+' || buffer.charAt(ref) == '-' || buffer.charAt(ref) == '*' ||
-                buffer.charAt(ref) == '/') {
+        if (isOperator(buffer.charAt(ref))) {
             token = getOperator(ref);
         }else if(Character.isDigit(buffer.charAt(ref)) || (buffer.charAt(ref) == '.')){
             token = getNumber(ref);
@@ -56,7 +59,6 @@ public class Lexer {
         }else if(buffer.charAt(ref) == '#'){
             token = getExpAssignment(ref);
         }
-        System.out.println(token.type + " " + token.value);
         return token;
 
     }
@@ -84,6 +86,10 @@ public class Lexer {
             throw new IllegalArgumentException("Lexical error: " + buffer.charAt(ref));
         }
     }
+    public boolean isIdentifier(char c){
+        return Character.isAlphabetic(c);
+    }
+
 
     public Token getIdentifier(int ref) {
         int ptr = ref + 1;
@@ -101,13 +107,15 @@ public class Lexer {
         }
     }
 
+    public boolean isIntOrFloat(char c){
+        return (Character.isDigit(c) || c == '.');
+    }
+
     public Token getNumber(int ref) {
         int ptr = ref;
         boolean isFloat = false;
-        boolean whitespace = false;// i added
-        while (ptr < buffer.length() &&
-                (Character.isDigit(buffer.charAt(ref)) ||
-                        buffer.charAt(ref) == '.') && !whitespace) {
+        boolean whitespace = false;
+        while (ptr < buffer.length() && (Character.isDigit(buffer.charAt(ref)) || buffer.charAt(ref) == '.') && !whitespace) {
             if (buffer.charAt(ptr) == '.') {
                 isFloat = true;
             }
@@ -129,10 +137,24 @@ public class Lexer {
         List<Token> tokenList = new ArrayList<>();
         Token temp;
         int ref = 0;
+        System.out.println(buffer.length());
         while(ref < buffer.length()){
             if(buffer.charAt(ref) != ' ') {
+                System.out.println(ref);
                 temp = getNextToken(ref);
                 tokenList.add(temp);
+                System.out.println(temp.toString());
+            }
+            if(isIntOrFloat(buffer.charAt(ref))){// edge case
+                while(isIntOrFloat(buffer.charAt(ref+1))){
+                    ref++;
+                    //System.out.println(ref);
+                }
+            }else if(isIdentifier(buffer.charAt(ref))){// edge case
+                while(isIntOrFloat(buffer.charAt(ref+1)) || isIdentifier(buffer.charAt(ref+ 1))){
+                    ref++;
+                    System.out.println(ref);
+                }
             }
             ref++;
         }
