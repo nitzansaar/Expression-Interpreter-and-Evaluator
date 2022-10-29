@@ -43,16 +43,39 @@ public class Lexer {
         ref is the current pointer in the string.
      */
     public Token getNextToken(int ref) {
-        return null;
+        Token token = new Token();
+        if (buffer.charAt(ref) == '+' || buffer.charAt(ref) == '-' || buffer.charAt(ref) == '*' ||
+                buffer.charAt(ref) == '/') {
+            token = getOperator(ref);
+        }else if(Character.isDigit(buffer.charAt(ref)) || (buffer.charAt(ref) == '.')){
+            token = getNumber(ref);
+        }else if(buffer.charAt(ref) == '='){
+            token = getAssignmentOperator(ref);
+        }else if(Character.isAlphabetic(buffer.charAt(ref))){
+            token = getIdentifier(ref);
+        }else if(buffer.charAt(ref) == '#'){
+            token = getExpAssignment(ref);
+        }
+        System.out.println(token.type + " " + token.value);
+        return token;
 
+    }
+
+    public Token getExpAssignment(int ref){
+        if(buffer.charAt(ref) == '#'){
+            return new Token(EXPRASSIGNMENT, buffer.substring(ref, ref+1));
+        }else {
+            throw new IllegalArgumentException("Lexical error: " + buffer.charAt(ref));
+        }
     }
 
     public Token getAssignmentOperator(int ref) {
-        return null;
+        if(buffer.charAt(ref) == '='){
+            return new Token(ASSIGNMENT, buffer.substring(ref, ref+1));
+        }else {
+            throw new IllegalArgumentException("Lexical error: " + buffer.charAt(ref));
+        }
     }
-
-
-
     public Token getOperator(int ref) {
         if (buffer.charAt(ref) == '+' || buffer.charAt(ref) == '-' || buffer.charAt(ref) == '*' ||
                 buffer.charAt(ref) == '/') {
@@ -63,17 +86,33 @@ public class Lexer {
     }
 
     public Token getIdentifier(int ref) {
-        return null;
+        int ptr = ref + 1;
+        boolean whitespace = false;
+        if(Character.isAlphabetic(buffer.charAt(ref))){
+            while(!whitespace && ptr < buffer.length()){
+                if(buffer.charAt(ptr) == ' '){
+                    whitespace = true;
+                }
+                ptr++;
+            }
+            return new Token(IDENTIFER, buffer.substring(ref, ptr));
+        }else {
+            throw new IllegalArgumentException("Lexical error: " + buffer.charAt(ref));
+        }
     }
 
     public Token getNumber(int ref) {
         int ptr = ref;
         boolean isFloat = false;
+        boolean whitespace = false;// i added
         while (ptr < buffer.length() &&
                 (Character.isDigit(buffer.charAt(ref)) ||
-                        buffer.charAt(ref) == '.')) {
-            if (buffer.charAt(ref) == '.') {
+                        buffer.charAt(ref) == '.') && !whitespace) {
+            if (buffer.charAt(ptr) == '.') {
                 isFloat = true;
+            }
+            if(buffer.charAt(ptr) == ' '){
+                whitespace = true;
             }
             ptr++;
         }
@@ -87,7 +126,17 @@ public class Lexer {
 
     /* iterate through the buffer and return a list of tokens. */
     public List<Token> getAllTokens() {
-
+        List<Token> tokenList = new ArrayList<>();
+        Token temp;
+        int ref = 0;
+        while(ref < buffer.length()){
+            if(buffer.charAt(ref) != ' ') {
+                temp = getNextToken(ref);
+                tokenList.add(temp);
+            }
+            ref++;
+        }
+        return tokenList;
     }
 
 
