@@ -83,7 +83,13 @@ public class ExpressionTree {
 
 /*parse variable identifiers */
     public static Node parseIdentifier(Token t) {
-        return null;
+        if (t == null) {
+            return new Node();
+        } else if (t.type.equals(Lexer.IDENTIFER)) {
+            return new Node(t);
+        } else {
+            throw new IllegalArgumentException("Parse error: " + t);
+        }
     }
 
     /* parse = */
@@ -109,7 +115,13 @@ public class ExpressionTree {
     /* parse a number  and return the appropriate node */
 
     public static Node parseNumber(Token t) {
-        return null;
+        if (t == null) {
+            return new Node();
+        } else if (t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT)) {
+            return new Node(t);
+        } else {
+            throw new IllegalArgumentException("Parse error: " + t);
+        }
 
     }
 

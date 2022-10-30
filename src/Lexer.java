@@ -117,7 +117,8 @@ public class Lexer {
         int ptr = ref;
         boolean isFloat = false;
         boolean whitespace = false;
-        while (ptr < buffer.length() && ((Character.isDigit(buffer.charAt(ptr)) || buffer.charAt(ptr) == '.') && (!whitespace))) {
+        while (ptr < buffer.length() && ((Character.isDigit(buffer.charAt(ptr))
+                || buffer.charAt(ptr) == '.') && (!whitespace))) {
             if (buffer.charAt(ptr) == '.') {
                 isFloat = true;
             }
@@ -143,7 +144,6 @@ public class Lexer {
             if(buffer.charAt(ref) != ' ') {
                 temp = getNextToken(ref);
                 tokenList.add(temp);
-                //System.out.println(temp);
             }
             if(isIntOrFloat(buffer.charAt(ref)) && ref+1 < buffer.length()){// edge case
                 while(isIntOrFloat(buffer.charAt(ref+1))){
