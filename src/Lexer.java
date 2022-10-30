@@ -35,7 +35,7 @@ public class Lexer {
      * @param s the String to be provided as input.
      */
     public void getInputFromString(String s) {
-        buffer = s;
+        buffer = s + " ";
     }
 
     /**
@@ -54,10 +54,12 @@ public class Lexer {
             token = getNumber(ref);
         }else if(buffer.charAt(ref) == '='){
             token = getAssignmentOperator(ref);
-        }else if(Character.isAlphabetic(buffer.charAt(ref))){
+        }else if(isIdentifier(buffer.charAt(ref))){
             token = getIdentifier(ref);
         }else if(buffer.charAt(ref) == '#'){
             token = getExpAssignment(ref);
+        }else{
+            throw new IllegalArgumentException("Lexer stopped at: " + ref);
         }
         return token;
 
@@ -115,7 +117,7 @@ public class Lexer {
         int ptr = ref;
         boolean isFloat = false;
         boolean whitespace = false;
-        while (ptr < buffer.length() && (Character.isDigit(buffer.charAt(ref)) || buffer.charAt(ref) == '.') && !whitespace) {
+        while (ptr < buffer.length() && ((Character.isDigit(buffer.charAt(ptr)) || buffer.charAt(ptr) == '.') && (!whitespace))) {
             if (buffer.charAt(ptr) == '.') {
                 isFloat = true;
             }
@@ -137,23 +139,19 @@ public class Lexer {
         List<Token> tokenList = new ArrayList<>();
         Token temp;
         int ref = 0;
-        System.out.println(buffer.length());
         while(ref < buffer.length()){
             if(buffer.charAt(ref) != ' ') {
-                System.out.println(ref);
                 temp = getNextToken(ref);
                 tokenList.add(temp);
-                System.out.println(temp.toString());
+                //System.out.println(temp);
             }
-            if(isIntOrFloat(buffer.charAt(ref))){// edge case
+            if(isIntOrFloat(buffer.charAt(ref)) && ref+1 < buffer.length()){// edge case
                 while(isIntOrFloat(buffer.charAt(ref+1))){
                     ref++;
-                    //System.out.println(ref);
                 }
-            }else if(isIdentifier(buffer.charAt(ref))){// edge case
+            }else if(isIdentifier(buffer.charAt(ref)) && ref+1 < buffer.length()){// edge case
                 while(isIntOrFloat(buffer.charAt(ref+1)) || isIdentifier(buffer.charAt(ref+ 1))){
                     ref++;
-                    System.out.println(ref);
                 }
             }
             ref++;

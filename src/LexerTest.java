@@ -15,13 +15,13 @@ class LexerTest {
     @BeforeEach
     void setup(){
         luther = new Lexer();
-        luther.getInputFromString("abc123 = 9 ");
+        luther.getInputFromString("abc 123 ");
     }
 
     @org.junit.jupiter.api.Test
     void getNextToken() {
         token = luther.getNextToken(0);
-        token1 = luther.getNextToken(1);
+        token1 = luther.getNextToken(4);
         System.out.println(token);
         System.out.println(token1);
     }
@@ -35,19 +35,61 @@ class LexerTest {
 
     @Test
     void getExpAssignment() {
+        luther.getInputFromString("#");
         token = luther.getExpAssignment(0);
         System.out.println(token.toString());
     }
 
     @Test
     void getAssignmentOperator() {
-        token = luther.getAssignmentOperator(10);
+        luther.getInputFromString("1 = x");
+        token = luther.getAssignmentOperator(2);
         System.out.println(token.toString());
     }
 
     @Test
     void getNumber() {
-        token = luther.getNumber(3);
+        luther.getInputFromString("1 + 3");
+        token = luther.getNumber(0);
+        System.out.println(token);
+        luther.getInputFromString("1.456");
+        token = luther.getNumber(0);
+        System.out.println(token);
+    }
+
+    @Test
+    void isIntOrFloat() {
+        assertTrue(luther.isIntOrFloat('1'));
+        assertFalse(luther.isIntOrFloat('b'));
+    }
+
+    @Test
+    void isIdentifier() {
+        assertTrue(luther.isIdentifier('a'));
+        assertFalse(luther.isIdentifier('1'));
+    }
+
+    @Test
+    void getOperator() {
+        luther.getInputFromString("-");
+        token = luther.getOperator(0);
+        System.out.println(token);
+        luther.getInputFromString("+");
+        token = luther.getOperator(0);
+        System.out.println(token);
+        luther.getInputFromString("/");
+        token = luther.getOperator(0);
+        System.out.println(token);
+        luther.getInputFromString("*");
+        token = luther.getOperator(0);
+        System.out.println(token);
+
+    }
+
+    @Test
+    void getIdentifier() {
+        luther.getInputFromString("abc123");
+        token = luther.getIdentifier(0);
         System.out.println(token);
     }
 }
