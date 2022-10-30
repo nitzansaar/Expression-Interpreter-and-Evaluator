@@ -11,25 +11,42 @@ class ExpressionTreeTest {
     Lexer luther = new Lexer();
     List<Token> tokenList = new ArrayList<>();
     ExpressionTree.Node node;
-    
-
     @BeforeEach
     void setup(){
-        luther.getInputFromString("123 + 8 - 9 = abc");
+        luther.getInputFromString("123 + 8 - 9 = abc#");
         tokenList = luther.getAllTokens();
         tree = new ExpressionTree(tokenList.get(0));
 
     }
-
     @Test
     void parseNumber() {
         node = tree.parseNumber(tokenList.get(0));
+        assertTrue(node.type.equals("INT"));
+        System.out.println(node);
+    }
+    @Test
+    void parseIdentifier() {
+        node = tree.parseIdentifier(tokenList.get(6));
+        assertTrue(node.type.equals("ID"));
+        System.out.println(node);
+    }
+    @Test
+    void parseExprOperator() {
+        node = tree.parseExprOperator(tokenList.get(7));
+        assertTrue(node.type.equals("EXPR"));
+        System.out.println(node);
+    }
+    @Test
+    void parseOperator() {
+        node = tree.parseOperator(tokenList.get(1));
+        assertTrue(node.type.equals("OP"));
         System.out.println(node);
     }
 
     @Test
-    void parseIdentifier() {
-        node = tree.parseIdentifier(tokenList.get(6));
+    void parseAssignmentOp() {
+        node = tree.parseAssignmentOp(tokenList.get(5));
+        assertTrue(node.type.equals("ASSIGN"));
         System.out.println(node);
     }
 }

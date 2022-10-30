@@ -15,7 +15,7 @@ class LexerTest {
     @BeforeEach
     void setup(){
         luther = new Lexer();
-        luther.getInputFromString("abc 123 ");
+        luther.getInputFromString("abc 123");
     }
 
     @org.junit.jupiter.api.Test

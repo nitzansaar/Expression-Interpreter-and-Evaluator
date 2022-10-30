@@ -94,7 +94,13 @@ public class ExpressionTree {
 
     /* parse = */
     public static Node parseAssignmentOp(Token t) {
-        return null;
+        if (t == null) {
+            return new Node();
+        } else if (t.type.equals(Lexer.ASSIGNMENT)) {
+            return new Node(t);
+        } else {
+            throw new IllegalArgumentException("Parse error: " + t);
+        }
     }
     /* parse +,-,*,/ */
     public static Node parseOperator(Token t) {
@@ -109,7 +115,13 @@ public class ExpressionTree {
 
     /* parse the expr (#) operator */
     public static Node parseExprOperator(Token t) {
-        return null;
+        if (t == null) {
+            return new Node();
+        } else if (t.type.equals(Lexer.EXPRASSIGNMENT)) {
+            return new Node(t);
+        } else {
+            throw new IllegalArgumentException("Parse error: " + t);
+        }
     }
 
     /* parse a number  and return the appropriate node */
@@ -135,8 +147,20 @@ public class ExpressionTree {
     }
 
     /* parseExpression. Use the shunting algorithm to parse the list of tokens into an expression tree. */
-
     public static Node parseExpression(List<Token> tokenList) {
+        // create stack of operators
+        // create stack of operands
+        Stack<Token> operands = new Stack<Token>();
+        Stack<Token> operators = new Stack<Token>();
+
+        for(Token t : tokenList){
+            if(t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT)){
+                operands.push(t);
+            }else if(t.type.equals(Lexer.OPERATOR)){
+                if(operators.isEmpty()/* or t is higher or equal priority to the top of the stack*/)
+                operators.push(t);
+            }
+        }
         return null;
     }
 
