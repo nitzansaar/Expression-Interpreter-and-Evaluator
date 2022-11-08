@@ -47,7 +47,7 @@ public class Lexer {
         return (c == '+' || c == '-' || c == '*' || c == '/');
     }
     public Token getNextToken(int ref) {
-        Token token = new Token();
+        Token token;
         if (isOperator(buffer.charAt(ref))) {
             token = getOperator(ref);
         }else if(Character.isDigit(buffer.charAt(ref)) || (buffer.charAt(ref) == '.')){
@@ -145,11 +145,11 @@ public class Lexer {
                 temp = getNextToken(ref);
                 tokenList.add(temp);
             }
-            if(isIntOrFloat(buffer.charAt(ref)) && ref+1 < buffer.length()){// edge case
+            if(isIntOrFloat(buffer.charAt(ref)) && ref+1 < buffer.length()){
                 while(isIntOrFloat(buffer.charAt(ref+1))){
                     ref++;
                 }
-            }else if(isIdentifier(buffer.charAt(ref)) && ref+1 < buffer.length()){// edge case
+            }else if(isIdentifier(buffer.charAt(ref)) && ref+1 < buffer.length()){
                 while(isIntOrFloat(buffer.charAt(ref+1)) || isIdentifier(buffer.charAt(ref+ 1))){
                     ref++;
                 }

@@ -154,11 +154,23 @@ public class ExpressionTree {
         Stack<Token> operators = new Stack<Token>();
 
         for(Token t : tokenList){
-            if(t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT)){
+            if(t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT) || t.type.equals(Lexer.IDENTIFER)){
                 operands.push(t);
+                System.out.println("Operand " + t.value);
             }else if(t.type.equals(Lexer.OPERATOR)){
-                if(operators.isEmpty()/* or t is higher or equal priority to the top of the stack*/)
-                operators.push(t);
+                if(operators.isEmpty() || hasPrecedence(t.value, operators.peek().value)){
+                    operators.push(t);
+                    System.out.println("Pushed an operator " + t.value);
+                }else{
+                    Node node = new Node(operators.pop());
+                    Node rightChild = new Node(operands.pop());
+                    node.right = rightChild;
+                    Node leftChild = new Node(operands.pop());
+                    node.left = leftChild;
+                    System.out.println("Hola");
+                    System.out.println(node.right.val + node.val + node.left.val);
+
+                }
             }
         }
         return null;

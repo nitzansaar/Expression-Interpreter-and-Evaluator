@@ -13,7 +13,7 @@ class ExpressionTreeTest {
     ExpressionTree.Node node;
     @BeforeEach
     void setup(){
-        luther.getInputFromString("123 + 8 - 9 = abc#");
+        luther.getInputFromString("123 * 8 + 9 - abc");
         tokenList = luther.getAllTokens();
         tree = new ExpressionTree(tokenList.get(0));
 
@@ -48,5 +48,10 @@ class ExpressionTreeTest {
         node = tree.parseAssignmentOp(tokenList.get(5));
         assertTrue(node.type.equals("ASSIGN"));
         System.out.println(node);
+    }
+
+    @Test
+    void parseExpression() {
+        tree.parseExpression(tokenList);
     }
 }
