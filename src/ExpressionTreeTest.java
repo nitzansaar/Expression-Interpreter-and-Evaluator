@@ -13,7 +13,7 @@ class ExpressionTreeTest {
     ExpressionTree.Node node;
     @BeforeEach
     void setup(){
-        luther.getInputFromString("123 * 8 + 9 - abc");
+        luther.getInputFromString("3 + 4 * 5 - 6");
         tokenList = luther.getAllTokens();
         tree = new ExpressionTree(tokenList.get(0));
 
@@ -52,6 +52,6 @@ class ExpressionTreeTest {
 
     @Test
     void parseExpression() {
-        tree.parseExpression(tokenList);
+        ExpressionTree.Node n = tree.parseExpression(tokenList);
     }
 }

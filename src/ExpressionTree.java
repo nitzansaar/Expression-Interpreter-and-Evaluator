@@ -17,9 +17,7 @@
 
  */
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 
 public class ExpressionTree {
@@ -50,7 +48,7 @@ public class ExpressionTree {
         this.root.right = null;
     }
 
-    public static class Node {
+    public static class Node extends Token {
         String type;
         String val;
         Node left;
@@ -150,30 +148,43 @@ public class ExpressionTree {
     public static Node parseExpression(List<Token> tokenList) {
         // create stack of operators
         // create stack of operands
-        Stack<Token> operands = new Stack<Token>();
-        Stack<Token> operators = new Stack<Token>();
+        Stack<Node> operands = new Stack<>();
+        Stack<Node> operators = new Stack<>();
 
         for(Token t : tokenList){
-            if(t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT) || t.type.equals(Lexer.IDENTIFER)){
-                operands.push(t);
-                System.out.println("Operand " + t.value);
+            if(t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT)){
+                operands.push(new Node(t));
             }else if(t.type.equals(Lexer.OPERATOR)){
-                if(operators.isEmpty() || hasPrecedence(t.value, operators.peek().value)){
-                    operators.push(t);
-                    System.out.println("Pushed an operator " + t.value);
+                if(operators.isEmpty() || hasPrecedence(t.value, operators.peek().val)){
+                    operators.push(new Node(t));
                 }else{
-                    Node node = new Node(operators.pop());
-                    Node rightChild = new Node(operands.pop());
-                    node.right = rightChild;
-                    Node leftChild = new Node(operands.pop());
-                    node.left = leftChild;
-                    System.out.println("Hola");
-                    System.out.println(node.right.val + node.val + node.left.val);
+                    if(operands.size() < 2){
+                        throw new IllegalArgumentException("Parse Error - operator: " + t);
+                    }
+                    Node tree = operators.pop();
+                    tree.right = operands.pop();
+                    tree.left = operands.pop();
 
+                    operands.push(tree);
+                    operators.push(new Node(t));
                 }
+            }else{
+                throw new IllegalArgumentException("Parse Error - unknown token: " + t);
             }
         }
-        return null;
+        while(!operators.isEmpty()){
+            Node temp = operators.pop();
+            if(operands.size() < 2){
+                throw new IllegalArgumentException("Parse error - operator: " + temp);
+            }
+            temp.right = operands.pop();
+            temp.left = operands.pop();
+            operands.push(temp);
+        }
+        if(operands.size() != 1){
+            throw new IllegalArgumentException("Parse error - too many operands");
+        }
+        return operands.pop();
     }
 
 
