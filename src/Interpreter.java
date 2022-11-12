@@ -17,6 +17,20 @@ public class Interpreter {
         Also add a verbose option that prints out the input and symbol table.
      */
     public void runShell() {
+        Scanner input = new Scanner(System.in);
+        List<Token> tokenList;
+        while(true){
+            try {
+                System.out.print(">>");
+                luthor.getInputFromString(input.nextLine());
+                tokenList = luthor.getAllTokens();
+                ExpressionTree tree = new ExpressionTree();
+                tree.parse(tokenList, variables);
+                System.out.println(tree.evaluate(variables));
+            }catch (Exception e){
+                System.out.println("Error");
+            }
+        }
 
     }
 

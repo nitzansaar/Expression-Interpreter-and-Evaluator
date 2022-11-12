@@ -52,6 +52,19 @@ class ExpressionTreeTest {
 
     @Test
     void parseExpression() {
-        ExpressionTree.Node n = tree.parseExpression(tokenList);
+        Lexer lexer = new Lexer();
+        lexer.getInputFromString("1 + 1");
+        List<Token> tokens = lexer.getAllTokens();
+        node = tree.parseExpression(tokens);
+        System.out.println(node);
+        System.out.println(node.left);
+        System.out.println(node.right);
+
+
+    }
+
+
+    @Test
+    void evaluate() {
     }
 }

@@ -17,7 +17,7 @@ public class Lexer {
     public int ref = 0;
 
     public Lexer(String fileName) {
-
+        getInputFromFile(fileName);
     }
 
     public Lexer() {
@@ -26,7 +26,6 @@ public class Lexer {
 
 
     public void getInputFromFile(String fileName)  {
-
     }
 
     /**
@@ -47,6 +46,9 @@ public class Lexer {
         return (c == '+' || c == '-' || c == '*' || c == '/');
     }
     public Token getNextToken(int ref) {
+        if(ref > buffer.length()){
+            throw new IllegalArgumentException("We are at the end of the string");
+        }
         Token token;
         if (isOperator(buffer.charAt(ref))) {
             token = getOperator(ref);
@@ -138,7 +140,7 @@ public class Lexer {
     /* iterate through the buffer and return a list of tokens. */
     public List<Token> getAllTokens() {
         List<Token> tokenList = new ArrayList<>();
-        Token temp;
+       Token temp;
         int ref = 0;
         while(ref < buffer.length()){
             if(buffer.charAt(ref) != ' ') {
