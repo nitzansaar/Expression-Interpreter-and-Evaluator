@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,13 +53,18 @@ class ExpressionTreeTest {
 
     @Test
     void parseExpression() {
-        Lexer lexer = new Lexer();
-        lexer.getInputFromString("1 + 1");
-        List<Token> tokens = lexer.getAllTokens();
-        node = tree.parseExpression(tokens);
-        System.out.println(node);
-        System.out.println(node.left);
-        System.out.println(node.right);
+        List<Token> tokens = new LinkedList<>();
+        Token t1 = new Token(Lexer.FLOAT, "3.14");
+        Token t2 = new Token(Lexer.OPERATOR, "+");
+        Token t3 = new Token(Lexer.INT, "7");
+        tokens.add(t1);
+        tokens.add(t2);
+        tokens.add(t3);
+        ExpressionTree.Node node1 = ExpressionTree.parseExpression(tokens);
+        System.out.println(node1.toString());
+        System.out.println(node1.right.toString());
+        System.out.println(node1.left.toString());
+
 
 
     }
@@ -66,5 +72,19 @@ class ExpressionTreeTest {
 
     @Test
     void evaluate() {
+    }
+
+    @Test
+    void parseAssignment() {
+        List<Token> tokens = new LinkedList<>();
+        SymbolTable table = new SymbolTable();
+        Token t1 = new Token(Lexer.IDENTIFER, "abc5");
+        Token t2 = new Token(Lexer.ASSIGNMENT, "=");
+        Token t3 = new Token(Lexer.INT, "7");
+        tokens.add(t1);
+        tokens.add(t2);
+        tokens.add(t3);
+        ExpressionTree.Node node1 = ExpressionTree.parseAssignment(tokens, table);
+        System.out.println(table.getValue("abc5"));
     }
 }

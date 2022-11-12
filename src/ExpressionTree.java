@@ -228,7 +228,20 @@ public class ExpressionTree {
         evaluate it, and store the result in the symbol table.
      */
     public static Node parseAssignment(List<Token> tokenList, SymbolTable table) {
-        return null;
+        if(tokenList.isEmpty() || tokenList.size() == 1) {
+            return null;
+        }else{
+            Node node = parseIdentifier(tokenList.get(0));
+            Node node1 = parseAssignmentOp(tokenList.get(1));
+            if(node == null || node1 == null){
+                throw new IllegalArgumentException("Parse error");
+            }else{
+                Node r = parseExpression(tokenList.subList(2,tokenList.size()));
+                double d = r.eval(table);
+                table.storeValue(node.val, d);
+                return r;
+            }
+        }
     }
 
     /* Similar to parseAssignment, except that we're not going to evaluate the expression. Instead, store the expression tree
@@ -236,7 +249,21 @@ public class ExpressionTree {
      */
 
     public static Node parseExprAssignment(List<Token> tokenList, SymbolTable table) {
-        return null;
+        if(tokenList.isEmpty() || tokenList.size() == 1){
+            return null;
+        }else{
+            Node node = parseIdentifier(tokenList.get(0));
+            Node node1 = parseExprOperator(tokenList.get(1));
+            if(node == null || node1 == null){
+                throw new IllegalArgumentException("Parse error");
+            }else{
+                Node r = parseExpression(tokenList.subList(2, tokenList.size()));
+                ExpressionTree tree = new ExpressionTree();
+                tree.root = r;
+                table.storeFxn(node.val, tree);
+                return r;
+            }
+        }
     }
 
     /* take a list of tokens, look ahead to see what we are parsing, and call the appropriate method */
