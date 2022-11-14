@@ -20,6 +20,7 @@ public class Interpreter {
     public void runShell() {
         Scanner scanner = new Scanner(System.in);
         List<Token> tokenList;
+        System.out.println("Enter \"STOP\" to exit and view Symbol Table");
             while (true) {
                 try {
                     System.out.print(">>");
@@ -67,7 +68,6 @@ public class Interpreter {
 
     public static void main (String[] args) throws FileNotFoundException {
         Interpreter shell = new Interpreter();
-        System.out.println("Enter \"STOP\" to exit and view Symbol Table");
         shell.runShell();
         //shell.executeFile("testfile.txt");
         System.out.println("Symbol table: ");
