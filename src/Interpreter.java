@@ -18,21 +18,25 @@ public class Interpreter {
         Also add a verbose option that prints out the input and symbol table.
      */
     public void runShell() {
-        Scanner input = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         List<Token> tokenList;
-        while(true){
-            try {
-                System.out.print(">>");
-                luthor.getInputFromString(input.nextLine());
-                tokenList = luthor.getAllTokens();
-                ExpressionTree tree = new ExpressionTree();
-                tree.parse(tokenList, variables);
-                System.out.println(tree.evaluate(variables));
-            }catch (Exception e){
-                System.out.println("Error");
+            while (true) {
+                try {
+                    System.out.print(">>");
+                    String temp = scanner.nextLine();
+                    if(temp.equals("STOP")){
+                        return;
+                    }
+                    System.out.println("Input: " + temp);
+                    luthor.getInputFromString(temp);
+                    tokenList = luthor.getAllTokens();
+                    ExpressionTree tree = new ExpressionTree();
+                    tree.parse(tokenList, variables);
+                    System.out.println("Output " + tree.evaluate(variables));
+                } catch (Exception e) {
+                    System.out.println("Error");
+                }
             }
-        }
-
     }
 
     /* a method that can read a series of lines in from a file, execute each one,
@@ -44,14 +48,17 @@ public class Interpreter {
         File file = new File(filename);
         Scanner input = new Scanner(file);
         List<Token> tokenList;
-        while(input.hasNext()){
+        while(input.hasNextLine()){
             try {
+                String temp = input.nextLine();
                 System.out.print(">>");
-                luthor.getInputFromString(input.nextLine());
+                luthor.getInputFromString(temp);
                 tokenList = luthor.getAllTokens();
                 ExpressionTree tree = new ExpressionTree();
                 tree.parse(tokenList, variables);
                 System.out.println(tree.evaluate(variables));
+                System.out.println("Input: " + temp);
+                System.out.println("Output " + tree.evaluate(variables));
             }catch (Exception e){
                 System.out.println("Error");
             }
@@ -60,8 +67,11 @@ public class Interpreter {
 
     public static void main (String[] args) throws FileNotFoundException {
         Interpreter shell = new Interpreter();
-        //shell.runShell();
+        System.out.println("Type \"STOP\" if you wish to exit");
+        shell.runShell();
         //shell.executeFile("testfile.txt");
+        System.out.println("Symbol table: ");
+        shell.variables.printElements();
     }
 
 }

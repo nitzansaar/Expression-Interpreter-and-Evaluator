@@ -22,7 +22,7 @@ import java.util.*;
 
 public class ExpressionTree {
 
-    Node root;
+    static Node root;
     static HashMap<String, Integer> precedence;
     static {
         precedence = new HashMap<>();
@@ -93,7 +93,7 @@ public class ExpressionTree {
                     return l * r;
                 }else if(this.val.equals("/")){
                     return l / r;
-                }else{
+                } else{
                     System.out.println("Error: Unknown operator");
                     return 0.0;
                 }
@@ -222,8 +222,6 @@ public class ExpressionTree {
         return operands.pop();
     }
 
-
-
     /* parse an assignment statement - grab the variable and assignment operator, parse the expression on the right-hand side,
         evaluate it, and store the result in the symbol table.
      */
@@ -236,10 +234,10 @@ public class ExpressionTree {
             if(node == null || node1 == null){
                 throw new IllegalArgumentException("Parse error");
             }else{
-                Node r = parseExpression(tokenList.subList(2,tokenList.size()));
-                double d = r.eval(table);
+                Node right = parseExpression(tokenList.subList(2,tokenList.size()));
+                double d = right.eval(table);
                 table.storeValue(node.val, d);
-                return r;
+                return right;
             }
         }
     }
@@ -266,7 +264,7 @@ public class ExpressionTree {
         }
     }
 
-    /* take a list of tokens, look ahead to see what we are parsing, and call the appropriate method */
+    /* take a list of tokens, look ahead to see what we are parsing,  and call the appropriate method */
 
     public static Node parseTokens(List<Token> tokenList, SymbolTable table) {
         Node node;
@@ -299,7 +297,7 @@ public class ExpressionTree {
     }
 
     /* wrapper method for eval */
-    public double evaluate(SymbolTable table) {
+    public static double evaluate(SymbolTable table) {
         return root.eval(table);
     }
 

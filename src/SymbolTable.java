@@ -30,5 +30,8 @@ public class SymbolTable {
     public void storeFxn(String s, ExpressionTree tree){
         functionTable.put(s, tree);
     }
+    public void printElements(){
+        System.out.println(this.symTable);
+    }
 
 }

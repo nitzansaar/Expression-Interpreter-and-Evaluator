@@ -17,7 +17,6 @@ public class Lexer {
     public int ref = 0;
 
     public Lexer(String fileName) {
-        getInputFromFile(fileName);
     }
 
     public Lexer() {
@@ -47,9 +46,9 @@ public class Lexer {
     }
     public Token getNextToken(int ref) {
         if(ref > buffer.length()){
-            throw new IllegalArgumentException("We are at the end of the string");
+            throw new IllegalArgumentException("Error");
         }
-        Token token;
+        Token token = new Token();
         if (isOperator(buffer.charAt(ref))) {
             token = getOperator(ref);
         }else if(Character.isDigit(buffer.charAt(ref)) || (buffer.charAt(ref) == '.')){
@@ -96,6 +95,7 @@ public class Lexer {
 
 
     public Token getIdentifier(int ref) {
+
         int ptr = ref + 1;
         boolean whitespace = false;
         if(Character.isAlphabetic(buffer.charAt(ref))){
@@ -140,7 +140,17 @@ public class Lexer {
     /* iterate through the buffer and return a list of tokens. */
     public List<Token> getAllTokens() {
         List<Token> tokenList = new ArrayList<>();
-       Token temp;
+        int ref = 0;
+        while (ref < this.buffer.length()){
+            if(Character.isWhitespace(buffer.charAt(ref))){
+                ref += 1;
+            }else{
+                Token token = getNextToken(ref);
+                ref += token.length();
+                tokenList.add(token);
+            }
+        }
+ /*      Token temp;
         int ref = 0;
         while(ref < buffer.length()){
             if(buffer.charAt(ref) != ' ') {
@@ -157,7 +167,7 @@ public class Lexer {
                 }
             }
             ref++;
-        }
+        }*/
         return tokenList;
     }
 

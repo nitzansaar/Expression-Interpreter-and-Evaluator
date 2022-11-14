@@ -27,7 +27,7 @@ class ExpressionTreeTest {
     }
     @Test
     void parseIdentifier() {
-        node = tree.parseIdentifier(tokenList.get(6));
+        //node = tree.parseIdentifier(tokenList.get(6));
         assertTrue(node.type.equals("ID"));
         System.out.println(node);
     }
@@ -65,13 +65,6 @@ class ExpressionTreeTest {
         System.out.println(node1.right.toString());
         System.out.println(node1.left.toString());
 
-
-
-    }
-
-
-    @Test
-    void evaluate() {
     }
 
     @Test
@@ -81,10 +74,51 @@ class ExpressionTreeTest {
         Token t1 = new Token(Lexer.IDENTIFER, "abc5");
         Token t2 = new Token(Lexer.ASSIGNMENT, "=");
         Token t3 = new Token(Lexer.INT, "7");
+        Token t4 = new Token(Lexer.OPERATOR, "+");
+        Token t5 = new Token(Lexer.FLOAT, "4.65");
         tokens.add(t1);
         tokens.add(t2);
         tokens.add(t3);
+        tokens.add(t4);
+        tokens.add(t5);
         ExpressionTree.Node node1 = ExpressionTree.parseAssignment(tokens, table);
         System.out.println(table.getValue("abc5"));
+    }
+
+    @Test
+    void parseTokens() {
+        SymbolTable table = new SymbolTable();
+        List<Token> tokens = new LinkedList<>();
+        Token t1 = new Token(Lexer.IDENTIFER, "abc5");
+        Token t2 = new Token(Lexer.ASSIGNMENT, "=");
+        Token t3 = new Token(Lexer.INT, "7");
+        tokens.add(t1);
+        tokens.add(t2);
+        tokens.add(t3);
+        ExpressionTree.Node node1 = ExpressionTree.parseTokens(tokens, table);
+        System.out.println(node1.type);
+
+
+    }
+
+    @Test
+    void evaluate() {
+        List<Token> tokens = new LinkedList<>();
+        SymbolTable table = new SymbolTable();
+        Token t1 = new Token(Lexer.IDENTIFER, "abc5");
+        Token t2 = new Token(Lexer.ASSIGNMENT, "=");
+        Token t3 = new Token(Lexer.INT, "9");
+        Token t4 = new Token(Lexer.OPERATOR, "+");
+        Token t5 = new Token(Lexer.FLOAT, "4.65");
+        tokens.add(t1);
+        tokens.add(t2);
+        tokens.add(t3);
+        tokens.add(t4);
+        tokens.add(t5);
+        table.storeValue(t1.value, Double.valueOf(t3.value));
+        ExpressionTree tree1 = new ExpressionTree(t1);
+        ExpressionTree expressionTree = new ExpressionTree(t1, tree1, tree1);
+        double result = expressionTree.evaluate(table);
+        System.out.println(result);
     }
 }

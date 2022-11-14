@@ -15,13 +15,13 @@ class LexerTest {
     @BeforeEach
     void setup(){
         luther = new Lexer();
-        luther.getInputFromString("abc + 123 + zyx = 19#");
+        luther.getInputFromString("abc5 + 123 + zyx = 19#");
     }
 
     @org.junit.jupiter.api.Test
     void getNextToken() {
         token = luther.getNextToken(0);
-        token1 = luther.getNextToken(4);
+        token1 = luther.getNextToken(5);
         System.out.println(token);
         System.out.println(token1);
     }
@@ -88,8 +88,10 @@ class LexerTest {
 
     @Test
     void getIdentifier() {
-        luther.getInputFromString("abc123");
-        token = luther.getIdentifier(0);
-        System.out.println(token);
+        luther.getInputFromString("abc123 + 7");
+        Token s = luther.getIdentifier(0);
+        System.out.println(s);
+        Token p = luther.getIdentifier(1);
+        System.out.println(p);
     }
 }
