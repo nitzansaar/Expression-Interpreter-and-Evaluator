@@ -67,7 +67,7 @@ public class Interpreter {
 
     public static void main (String[] args) throws FileNotFoundException {
         Interpreter shell = new Interpreter();
-        System.out.println("Type \"STOP\" if you wish to exit");
+        System.out.println("Enter \"STOP\" to exit and view Symbol Table");
         shell.runShell();
         //shell.executeFile("testfile.txt");
         System.out.println("Symbol table: ");

@@ -91,7 +91,5 @@ class LexerTest {
         luther.getInputFromString("abc123 + 7");
         Token s = luther.getIdentifier(0);
         System.out.println(s);
-        Token p = luther.getIdentifier(1);
-        System.out.println(p);
     }
 }

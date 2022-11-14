@@ -35,7 +35,9 @@ class ExpressionTreeTest {
     }
     @Test
     void parseExprOperator() {
-        node = tree.parseExprOperator(tokenList.get(7));
+        luther.getInputFromString("#");
+        tokenList = luther.getAllTokens();
+        node = tree.parseExprOperator(tokenList.get(0));
         assertTrue(node.type.equals("EXPR"));
         System.out.println(node);
     }
@@ -48,7 +50,9 @@ class ExpressionTreeTest {
 
     @Test
     void parseAssignmentOp() {
-        node = tree.parseAssignmentOp(tokenList.get(5));
+        luther.getInputFromString("=");
+        tokenList = luther.getAllTokens();
+        node = tree.parseAssignmentOp(tokenList.get(0));
         assertTrue(node.type.equals("ASSIGN"));
         System.out.println(node);
     }
