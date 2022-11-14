@@ -35,7 +35,7 @@ public class Interpreter {
                     tree.parse(tokenList, variables);
                     System.out.println("Output " + tree.evaluate(variables));
                 } catch (Exception e) {
-                    System.out.println("Error");
+                    System.out.println("Invalid Input");
                 }
             }
     }
