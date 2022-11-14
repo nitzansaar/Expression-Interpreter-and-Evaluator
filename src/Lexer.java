@@ -33,7 +33,7 @@ public class Lexer {
      * @param s the String to be provided as input.
      */
     public void getInputFromString(String s) {
-        buffer = s + " ";
+        buffer = s;
     }
 
     /**

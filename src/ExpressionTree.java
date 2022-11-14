@@ -187,7 +187,7 @@ public class ExpressionTree {
         Stack<Node> operators = new Stack<>();
 
         for(Token t : tokenList){
-            if(t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT)){
+            if(t.type.equals(Lexer.IDENTIFER) ||t.type.equals(Lexer.INT) || t.type.equals(Lexer.FLOAT)){
                 operands.push(new Node(t));
             }else if(t.type.equals(Lexer.OPERATOR)){
                 if(operators.isEmpty() || hasPrecedence(t.value, operators.peek().val)){
@@ -256,9 +256,9 @@ public class ExpressionTree {
                 throw new IllegalArgumentException("Parse error");
             }else{
                 Node r = parseExpression(tokenList.subList(2, tokenList.size()));
-                ExpressionTree tree = new ExpressionTree();
-                tree.root = r;
-                table.storeFxn(node.val, tree);
+                ExpressionTree expressionTree = new ExpressionTree();
+                expressionTree.root = r;
+                table.storeFxn(node.val, expressionTree);
                 return r;
             }
         }
@@ -274,7 +274,7 @@ public class ExpressionTree {
                     tokenList.get(0).type.equals(Lexer.IDENTIFER)){
                 node = parseNumberOrID(tokenList.get(0));
             }else{
-                throw new IllegalArgumentException("Error: Unexpected Token");
+                throw new IllegalArgumentException("Error");
             }
         }else if(tokenList.get(0).type.equals(Lexer.IDENTIFER) &&
                 tokenList.get(1).type.equals(Lexer.ASSIGNMENT)){
@@ -286,7 +286,7 @@ public class ExpressionTree {
             node = parseExpression(tokenList);
         }
         if(node == null){
-            System.out.println("Parse error");
+            System.out.println("Error");
         }
         return node;
     }

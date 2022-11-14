@@ -27,9 +27,11 @@ class ExpressionTreeTest {
     }
     @Test
     void parseIdentifier() {
-        //node = tree.parseIdentifier(tokenList.get(6));
-        assertTrue(node.type.equals("ID"));
-        System.out.println(node);
+        luther.getInputFromString("abc5 = 9");
+        tokenList = luther.getAllTokens();
+        ExpressionTree expressionTree = new ExpressionTree(tokenList.get(0));
+        node = tree.parseIdentifier(tokenList.get(0));
+        System.out.println(node.type);
     }
     @Test
     void parseExprOperator() {

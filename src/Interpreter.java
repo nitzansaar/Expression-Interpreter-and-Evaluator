@@ -24,7 +24,7 @@ public class Interpreter {
                 try {
                     System.out.print(">>");
                     String temp = scanner.nextLine();
-                    if(temp.equals("STOP")){
+                    if(temp.equalsIgnoreCase("STOP")){
                         return;
                     }
                     System.out.println("Input: " + temp);
