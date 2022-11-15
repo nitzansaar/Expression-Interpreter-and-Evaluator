@@ -112,8 +112,8 @@ public class Interpreter {
 
     public static void main (String[] args) throws FileNotFoundException {
         Interpreter shell = new Interpreter();
-        //shell.runShell();
-        shell.executeFile("testfile.txt");
+        shell.runShell();
+        //shell.executeFile("testfile.txt");
         System.out.println("Symbol table: ");
         shell.variables.printElements();
     }

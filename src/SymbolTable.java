@@ -21,7 +21,7 @@ public class SymbolTable {
     public void storeValue(String s, Double d){
         symTable.put(s, d);
     }
-    public boolean containsFxn(String s){
+    public boolean hasFxn(String s){
         return functionTable.containsKey(s);
     }
     public ExpressionTree getFxn(String s){

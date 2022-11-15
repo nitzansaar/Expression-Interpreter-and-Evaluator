@@ -77,9 +77,9 @@ public class ExpressionTree {
             }else if(this.type == Lexer.IDENTIFER) {
                 if (table.contains(this.val)) {
                     return table.getValue(this.val);
-                } else if (table.containsFxn(this.val)) {
+                } else if (table.hasFxn(this.val)) {
                     return table.getFxn(this.val).evaluate(table);
-                } else {
+                }else {
                     throw new IllegalArgumentException("Not in symbol table");
                 }
             }else if(this.type == Lexer.OPERATOR){
