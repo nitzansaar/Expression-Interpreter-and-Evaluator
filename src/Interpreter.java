@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,7 +21,11 @@ public class Interpreter {
     public void runShell() {
         Scanner scanner = new Scanner(System.in);
         List<Token> tokenList;
-        System.out.println("Enter \"STOP\" to exit and view Symbol Table");
+        System.out.print("Verbose mode?(Y/N): ");
+        String answer = scanner.next();
+        if(answer.equalsIgnoreCase("Y")){
+            System.out.println("Enter \"STOP\" to exit and view Symbol Table");
+            scanner.nextLine();
             while (true) {
                 try {
                     System.out.print(">>");
@@ -38,6 +43,26 @@ public class Interpreter {
                     System.out.println("Invalid Input");
                 }
             }
+        }else if(answer.equalsIgnoreCase("N")){
+            System.out.println("Enter \"STOP\" to exit and view Symbol Table");
+            scanner.nextLine();
+            while (true) {
+                try {
+                    System.out.print(">>");
+                    String temp = scanner.nextLine();
+                    if(temp.equalsIgnoreCase("STOP")){
+                        return;
+                    }
+                    luthor.getInputFromString(temp);
+                    tokenList = luthor.getAllTokens();
+                    ExpressionTree tree = new ExpressionTree();
+                    tree.parse(tokenList, variables);
+                    System.out.println(tree.evaluate(variables));
+                } catch (Exception e) {
+                    System.out.println("Invalid Input");
+                }
+            }
+        }
     }
 
     /* a method that can read a series of lines in from a file, execute each one,
@@ -49,27 +74,46 @@ public class Interpreter {
         File file = new File(filename);
         Scanner input = new Scanner(file);
         List<Token> tokenList;
-        while(input.hasNextLine()){
-            try {
-                String temp = input.nextLine();
-                System.out.print(">>");
-                luthor.getInputFromString(temp);
-                tokenList = luthor.getAllTokens();
-                ExpressionTree tree = new ExpressionTree();
-                tree.parse(tokenList, variables);
-                System.out.println(tree.evaluate(variables));
-                System.out.println("Input: " + temp);
-                System.out.println("Output " + tree.evaluate(variables));
-            }catch (Exception e){
-                System.out.println("Error");
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Verbose mode?(Y/N): ");
+        String answer = scanner.next();
+        if(answer.equalsIgnoreCase("y")){
+            while(input.hasNextLine()){
+                try {
+                    String temp = input.nextLine();
+                    System.out.print(">>");
+                    luthor.getInputFromString(temp);
+                    tokenList = luthor.getAllTokens();
+                    ExpressionTree tree = new ExpressionTree();
+                    tree.parse(tokenList, variables);
+                    System.out.println(tree.evaluate(variables));
+                    System.out.println("Input: " + temp);
+                    System.out.println("Output " + tree.evaluate(variables));
+                }catch (Exception e){
+                    System.out.println("Error");
+                }
+            }
+        }else if(answer.equalsIgnoreCase("n")){
+            while(input.hasNextLine()){
+                try {
+                    String temp = input.nextLine();
+                    System.out.print(">>");
+                    luthor.getInputFromString(temp);
+                    tokenList = luthor.getAllTokens();
+                    ExpressionTree tree = new ExpressionTree();
+                    tree.parse(tokenList, variables);
+                    System.out.println(tree.evaluate(variables));
+                }catch (Exception e){
+                    System.out.println("Error");
+                }
             }
         }
     }
 
     public static void main (String[] args) throws FileNotFoundException {
         Interpreter shell = new Interpreter();
-        shell.runShell();
-        //shell.executeFile("testfile.txt");
+        //shell.runShell();
+        shell.executeFile("testfile.txt");
         System.out.println("Symbol table: ");
         shell.variables.printElements();
     }
