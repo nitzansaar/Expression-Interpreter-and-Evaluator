@@ -1,90 +1,46 @@
-### Assignment 5: Lexer, Parser, Interpreter
+# Interpreter Project
 
-##### Due Monday 11/14 at the start of class.
+The Interpreter project is a simple interactive interpreter that can parse and evaluate mathematical expressions, perform assignments, and store variables. It supports basic arithmetic operations, variable assignments, and expression tree evaluations.
 
-This homework will be graded using specifications grading. There are a sequence of tasks to complete. Grades will be assigned as follows:
+## Overview
 
-    To receive a C, you should complete tasks 1-4 and 6
-    To receive a B, complete all the C-level tasks, plus tasks 5,7 and 8.
-    To receive an A, complete the B-level tasks, plus task 9.
+The project consists of the following key components:
 
+- **Interpreter:** The main class responsible for launching the interactive interpreter and executing user input or file input. It interacts with the Lexer and ExpressionTree classes to tokenize and evaluate expressions.
 
-In this project, you'll be integrating several concepts that you've learned about this semester to implement an interpreter that can read and evaluate inputs. You will:
+- **Lexer:** This class performs lexical analysis by tokenizing input strings into a list of tokens. Tokens can represent integers, floats, identifiers, operators, assignments, and expression assignment operators.
 
-- see how to use Stacks, Trees, Lists and HashMaps in a larger program
-- Learn how to tokenize, parse and evaluate sentences in a high-level language
+- **ExpressionTree:** This class constructs and evaluates expression trees based on the provided tokens. It handles arithmetic operations, variable lookups, and function evaluations. The parse methods implement the shunting algorithm to convert infix expressions into expression trees.
 
-Advice:
+- **SymbolTable:** A data structure that stores variables and function expressions. It provides methods to store, retrieve, and evaluate variables and functions.
 
-Build this incrementally. Start small, and be diligent about unit testing as you go. There are lots of interlocking pieces. The debugger is also very helpful for this project.
- I've provided some skeleton code to help guide you through this.
- 
- 
-Refer to the lecture slides as well for details.
+## Getting Started
 
-Terminology:
-- A term is a single number or variable.
-- An expression is a set of numbers, identifiers and operators organized in a legal way.
-For example:
-  - 4 + 3
-  - x - y * z + 1
-  - 3 - x + x * y + 4
+1. Clone or download the repository.
+2. Make sure you have Java installed on your machine.
+3. Compile the source code using `javac *.java`.
+4. Run the interpreter using `java Interpreter`.
 
-- An assignment is a statement with an expression on the right-hand side and an identifier on the left.
-- For example:
-  - x = 4
-  - y = 3 * z - 1
-  - y = y + 3 - x
-  
-Part 1: Lexer.
+## Usage
 
-A lexer is a tool that takes a String as input and emits a list of Tokens. (I've provided the Token class for you.)
+The Interpreter allows you to interactively input expressions and see the results. You can also input expressions from a file.
 
-A Token has a type and a value. Our language has the following Tokens:
+## What I Learned
 
-- Integers: At least one digit in a row.
-- Floats: One or more digits, followed by ., followed by more digits.
-- Identifiers. A letter, followed by letters or numbers.
-- Operators: +, -, *, /
-- Assignment: =
-- Expression assignment: #
+Through this project, I gained practical experience in the following areas:
 
+- **Lexical Analysis:** I learned how to tokenize input strings and categorize tokens using the Lexer class. This allowed me to prepare input for parsing and evaluation.
 
-Tokens can have whitespace between them, but it's not required.
+- **Expression Parsing:** The ExpressionTree class taught me about parsing arithmetic expressions and converting them into expression trees using the shunting algorithm. I learned how to handle operator precedence and build expression trees from tokens.
 
-Task 1: Implement the methods in Lexer so that getAllTokens repeatedly calls getNextToken, which  looks at the current position in the input buffer, determines what token is next, and calls the appropriate method. It should return a list of Tokens. If the input is invalid, throw an 
-IllegalArgumentException and indicate where the lexer stopped. Please note that the Lexer is not trying to determine whether an expression is valid; just generating tokens.
- 
- Part 2: Expression Tree. 
- 
- Note: this is the most complex part of the project. Start by just parsing expressions, then work on the interpreter. That will help you see how it all fits together. Then back up and worry about handling assignments.
- 
- The expression tree is a data structure that stores a computation. Leaves contain numbers or variables, and parent nodes contain operators. We can compute the result by doing a postorder traversal.
- 
- Task 2: Start by implementing parseNumber and parseIdentifier, using parseOperator as an example. They should all take a Token (generated by the Lexer) as input and return a Node. If they get unexpected input, they should throw an IllegalArgumentException indicating a parse error, and the token being processed. You should be using jUnit as you go to convince yourself that each of these work correctly.
- 
-Task 3:  Next, implement parseExpression. Use the shunting yard algorithm presented in the lecture slides to construct an expression tree, calling the methods you just implemented. Throw an IllegalArgumentEception indicating a parse error and the token being processed if the input is invalid. Again, use JUnit to convince yourself that this is working.
- 
-Task 4: Next, implement evaluate. This should do a postorder traversal of the tree - each operator node should evaluate its left branch, evaluate its right branch, apply the operator, and return the result. Leaves should either return their value (if they're a number) or look up their value in the Symbol Table (if they're an identifier.) Again, test with JUnit.
- 
-(at this point, you might want to jump to part 3, get the basic shell running, and try it out.)
- 
-Task 5: Next, implement parseAssignment. Parse the identifier and assignment operator, parse the expression on the right-hand side, evaluate it, and store the result in the Symbol Table.
- 
-Part 3: Interpreter:
- 
- The interpreter is the engine that runs everything. It should be able to either:
+- **Symbol Management:** The SymbolTable class demonstrated the importance of managing variables and functions efficiently. I learned how to store, retrieve, and evaluate these symbols within an interpreter.
 
-Task 6: prompt the user for input, read in a string, run it through the lexer, then parse it and display the result. 
-Task 7: Read a series of sentences from a file and sequentially parse them and display their results.
- 
+- **Interactive User Input:** I explored how to create an interactive interpreter that reads input from the user and provides real-time feedback on expressions and results.
 
-Task 8: It should have a verbose mode that displays input and output, along with the symbol table. This will be helpful for debugging.
- 
- Part 4: Expression assignment.
- 
- A cool feature of expression trees is the fact tht they're both code and data. We'll use this to store them as a function and execute them later.
- 
-Task 9: Implement the parseExprAssignment method. Like parseAssignment, it should grab the identifer, parse the exprAssignment operator, and then parse the expression on the right-hand side. But, rather than evaluating it, you should store the expression tree in the Symbol Table.
- Then, modify evaluate() so that when that identifier is evaluated, the corresponding expression tree is fetched from the symbol table and evaluated.
-   
+- **Testing with JUnit:** I practiced writing unit tests using JUnit to verify the functionality of components like the ExpressionTree class. This helped ensure that my code works as expected.
+
+## Example Usage
+
+```java
+Interpreter shell = new Interpreter();
+shell.runShell();
