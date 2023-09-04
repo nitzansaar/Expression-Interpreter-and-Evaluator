@@ -1,4 +1,4 @@
-# Interpreter Project
+# Expression Interpreter and Evaluator
 
 The Interpreter project is a simple interactive interpreter that can parse and evaluate mathematical expressions, perform assignments, and store variables. It supports basic arithmetic operations, variable assignments, and expression tree evaluations.
 
